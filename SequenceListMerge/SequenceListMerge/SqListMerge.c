@@ -5,20 +5,18 @@
 #include <stdio.h>
 #include <malloc.h>
 
-#define LISTSIZEMAX 50
+#define LENGTHMAX 50
 
 //定义线性表结构
 typedef struct SeqList {
 	int* elem;
 	int length;
-	int listsize;
 }SeqList;
 
 //初始化结构体，为线性表分配存储空间
 void InitSeqlist(SeqList *L) {
-	L->elem = (int*)malloc(LISTSIZEMAX * sizeof(int));
+	L->elem = (int*)malloc(LENGTHMAX * sizeof(int));
 	L->length = 0;
-	L->listsize = LISTSIZEMAX;
 }
 
 //定义输入数据元素函数
