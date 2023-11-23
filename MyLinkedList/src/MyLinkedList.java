@@ -6,7 +6,7 @@
  * Time: 23:59
  */
 public class MyLinkedList {
-    static class Node {
+    public static class Node {
         public int val;
         public Node next;
 
@@ -15,6 +15,7 @@ public class MyLinkedList {
         }
 
     }
+
     private Node head; // 存储链表头节点的引用
 
     public void createList() {
@@ -53,7 +54,7 @@ public class MyLinkedList {
 
 
     //头插法
-    public void addFirst(int data){
+    public void addFirst(int data) {
         if (head == null) {
             head = new Node(data);
         } else {
@@ -136,6 +137,7 @@ public class MyLinkedList {
 
     /**
      * 找到关键字 key 的前驱
+     *
      * @param key
      * @return
      */
@@ -203,6 +205,60 @@ public class MyLinkedList {
             cur = curNext;
         }
         head = null;
+    }
+
+    // 反转链表
+    public Node ReverseList() {
+        if (head == null) { // 链表为空
+            return null;
+        }
+        if (head.next == null) { // 链表只有一个节点
+            return head;
+        }
+        Node cur = head.next;
+        head.next = null;
+        while (cur != null) {
+            Node cutNext = cur.next;
+            cur.next = head;
+            head = cur;
+            cur = cutNext;
+        }
+        return head;
+    }
+
+    // 给你单链表的头结点 head ，请你找出并返回链表的中间结点。如果有两个中间结点，则返回第二个中间结点。
+    public Node middleNode() {
+        if (head == null) {
+            return null;
+        }
+        Node slow = head;
+        Node first = head;
+        while (first != null && first.next != null) {
+            slow = slow.next;
+            first = first.next.next;
+        }
+        return slow;
+    }
+
+    // 输出该链表中倒数第k个结点。
+    public Node FindKthToTail(int k) {
+        if (head == null || k <= 0) {
+            return null;
+        }
+        Node first = head;
+        Node slow = head;
+        while (k - 1 != 0) {
+            first = first.next;
+            if (first == null) {
+                return null;
+            }
+            k--;
+        }
+        while (first.next != null) {
+            first = first.next;
+            slow = slow.next;
+        }
+        return slow;
     }
 
 }
