@@ -6,23 +6,23 @@
  * Time: 23:59
  */
 public class MyLinkedList {
-    public static class Node {
+    public static class ListNode {
         public int val;
-        public Node next;
+        public ListNode next;
 
-        public Node(int val) {
+        public ListNode(int val) {
             this.val = val;
         }
 
     }
 
-    private Node head; // 存储链表头节点的引用
+    private ListNode head; // 存储链表头节点的引用
 
     public void createList() {
-        Node node1 = new Node(1);
-        Node node2 = new Node(2);
-        Node node3 = new Node(3);
-        Node node4 = new Node(4);
+        ListNode node1 = new ListNode(1);
+        ListNode node2 = new ListNode(2);
+        ListNode node3 = new ListNode(3);
+        ListNode node4 = new ListNode(4);
         node1.next = node2;
         node2.next = node3;
         node3.next = node4;
@@ -56,9 +56,9 @@ public class MyLinkedList {
     //头插法
     public void addFirst(int data) {
         if (head == null) {
-            head = new Node(data);
+            head = new ListNode(data);
         } else {
-            Node node = new Node(data);
+            ListNode node = new ListNode(data);
             node.next = head;
             head = node;
         }
@@ -67,13 +67,13 @@ public class MyLinkedList {
     //尾插法
     public void addLast(int data) {
         if (head == null) {
-            head = new Node(data);
+            head = new ListNode(data);
         } else {
-            Node cur = head;
+            ListNode cur = head;
             while (cur.next != null) {
                 cur = cur.next;
             }
-            cur.next = new Node(data);
+            cur.next = new ListNode(data);
         }
     }
 
@@ -91,15 +91,15 @@ public class MyLinkedList {
         } else if (index == size()) {
             addLast(data);
         } else {
-            Node node = new Node(data);
-            Node preNode = findIndexPreOfOne(index);
+            ListNode node = new ListNode(data);
+            ListNode preNode = findIndexPreOfOne(index);
             node.next = preNode.next;
             preNode.next = node;
         }
     }
 
-    private Node findIndexPreOfOne(int index) {
-        Node node = head;
+    private ListNode findIndexPreOfOne(int index) {
+        ListNode node = head;
         while (index - 1 != 0) {
             node = node.next;
             index--;
@@ -109,7 +109,7 @@ public class MyLinkedList {
 
     //查找是否包含关键字key是否在单链表当中
     public boolean contains(int key) {
-        Node cur = head;
+        ListNode cur = head;
         while (cur != null) {
             if (cur.val == key) {
                 return true;
@@ -128,7 +128,7 @@ public class MyLinkedList {
             head = head.next;
             return;
         }
-        Node cur = findPreOfKey(key);
+        ListNode cur = findPreOfKey(key);
         if (cur == null) {
             return;
         }
@@ -141,11 +141,11 @@ public class MyLinkedList {
      * @param key
      * @return
      */
-    private Node findPreOfKey(int key) {
+    private ListNode findPreOfKey(int key) {
         if (head == null) {
             return null;
         }
-        Node cur = head;
+        ListNode cur = head;
         while (cur.next != null) {
             if (cur.next.val == key) {
                 return cur;
@@ -160,8 +160,8 @@ public class MyLinkedList {
         if (head == null) {
             return;
         }
-        Node prev = head;
-        Node cur = prev.next;
+        ListNode prev = head;
+        ListNode cur = prev.next;
         while (cur != null) {
             if (cur.val == kay) {
                 prev.next = cur.next;
@@ -179,7 +179,7 @@ public class MyLinkedList {
     //得到单链表的长度
     public int size() {
         int count = 0;
-        Node cur = head;
+        ListNode cur = head;
         while (cur != null) {
             count++;
             cur = cur.next;
@@ -188,7 +188,7 @@ public class MyLinkedList {
     }
 
     public void display() {
-        Node cur = head;
+        ListNode cur = head;
         while (cur != null) {
             System.out.print(cur.val + " ");
             cur = cur.next;
@@ -198,9 +198,9 @@ public class MyLinkedList {
 
     public void clear() {
 //        this.head = null;
-        Node cur = head;
+        ListNode cur = head;
         while (cur != null) {
-            Node curNext = cur.next;
+            ListNode curNext = cur.next;
             cur.next = null;
             cur = curNext;
         }
@@ -208,17 +208,17 @@ public class MyLinkedList {
     }
 
     // 反转链表
-    public Node ReverseList() {
+    public ListNode ReverseList() {
         if (head == null) { // 链表为空
             return null;
         }
         if (head.next == null) { // 链表只有一个节点
             return head;
         }
-        Node cur = head.next;
+        ListNode cur = head.next;
         head.next = null;
         while (cur != null) {
-            Node cutNext = cur.next;
+            ListNode cutNext = cur.next;
             cur.next = head;
             head = cur;
             cur = cutNext;
@@ -227,12 +227,12 @@ public class MyLinkedList {
     }
 
     // 给你单链表的头结点 head ，请你找出并返回链表的中间结点。如果有两个中间结点，则返回第二个中间结点。
-    public Node middleNode() {
+    public ListNode middleNode() {
         if (head == null) {
             return null;
         }
-        Node slow = head;
-        Node first = head;
+        ListNode slow = head;
+        ListNode first = head;
         while (first != null && first.next != null) {
             slow = slow.next;
             first = first.next.next;
@@ -241,12 +241,12 @@ public class MyLinkedList {
     }
 
     // 输出该链表中倒数第k个结点。
-    public Node FindKthToTail(int k) {
+    public ListNode FindKthToTail(int k) {
         if (head == null || k <= 0) {
             return null;
         }
-        Node first = head;
-        Node slow = head;
+        ListNode first = head;
+        ListNode slow = head;
         while (k - 1 != 0) {
             first = first.next;
             if (first == null) {
@@ -261,4 +261,27 @@ public class MyLinkedList {
         return slow;
     }
 
+    // 合并两个有序链表,将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode newList = new ListNode(-1);
+        ListNode cur = newList;
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                cur.next = list1;
+                cur = list1;
+                list1 = list1.next;
+            } else {
+                cur.next = list2;
+                cur = list2;
+                list2 = list2.next;
+            }
+        }
+        if (list1 != null) {
+            cur.next = list1;
+        }
+        if (list2 != null) {
+            cur.next = list2;
+        }
+        return newList.next;
+    }
 }
