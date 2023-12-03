@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * Description:
@@ -283,5 +285,82 @@ public class MyLinkedList {
             cur.next = list2;
         }
         return newList.next;
+    }
+
+    // 链表分割,现有一链表的头指针 ListNode* pHead，给一定值x，编写一段代码将所有小于x的结点排在其余结点之前，且不能改变原来的数据顺序，返回重新排列后的链表的头指针。
+    public ListNode partition(ListNode pHead, int x) {
+        ListNode bs = null, be = null; // 第一段
+        ListNode as = null, ae = null; // 第二段
+        ListNode cur = pHead;
+        while (cur != null) {
+            // 插入到第一段-尾插
+            if (cur.val < x) {
+                if (bs == null) {
+                    // 第一次插入
+                    bs = cur;
+                    be = cur;
+                } else {
+                    be.next = cur;
+                    be = be.next;
+                }
+            } else {
+                // 插入到第二段-尾插
+                if (as == null) {
+                    // 第一次插入
+                    as = cur;
+                    ae = cur;
+                } else {
+                    ae.next = cur;
+                    ae = ae.next;
+                }
+            }
+            cur = cur.next;
+        }
+        if (bs == null) {
+            return as;
+        }
+        if (as != null) {
+            ae.next = null;
+        }
+        be.next = as;
+        return bs;
+    }
+
+//    链表的回文结构
+/*
+    对于一个链表，请设计一个时间复杂度为O(n),额外空间复杂度为O(1)的算法，判断其是否为回文结构。
+    给定一个链表的头指针A，请返回一个bool值，代表其是否为回文结构。保证链表长度小于等于900。
+*/
+    public boolean chkPalindrome(ListNode head) {
+        if (head == null) {
+            return true;
+        }
+        // 找链表中间
+        ListNode fast = head;
+        ListNode slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        // 开始翻转
+        ListNode cur = slow.next;
+        while (cur != null) {
+            ListNode curNext = cur.next;
+            cur.next = slow;
+            slow = cur;
+            cur = curNext;
+        }
+        // 开始判断回文
+        while (head != slow) {
+            if (head.val != slow.val) {
+                return false;
+            }
+            if (head.next == slow) {
+                return true;
+            }
+            head = head.next;
+            slow = slow.next;
+        }
+        return true;
     }
 }
