@@ -100,11 +100,14 @@ public class Test {
                 2. -1000<=pushV[i]<=1000
                 3. pushV 的所有数字均不相同*/
     public boolean IsPopOrder(int[] pushV, int[] popV) {
+        if (pushV.length == 0 || popV.length == 0) {
+            return false;
+        }
         Stack<Integer> stack = new Stack<>();
         int j = 0;
         for (int i = 0; i < pushV.length; i++) {
             stack.push(pushV[i]); // 将元素压入栈中
-            while (!stack.isEmpty() && stack.peek() == popV[j]) {
+            while (j < popV.length && !stack.isEmpty() && stack.peek().equals(popV[j]) ) {
                 // 如果栈顶元素和当前弹出序列元素相等，就弹出栈顶元素并移动弹出序列的指针
                 stack.pop();
                 j++;
