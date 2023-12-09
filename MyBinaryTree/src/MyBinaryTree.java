@@ -31,6 +31,11 @@ public class MyBinaryTree {
         System.out.println("binaryTree.size(binaryTree.root) = " + binaryTree.size(binaryTree.root));
         binaryTree.size2(binaryTree.root);
         System.out.println("binaryTree.nodeSize = " + binaryTree.nodeSize);
+        System.out.println("binaryTree.getLeafNodeCount(binaryTree.root) = " + binaryTree.getLeafNodeCount(binaryTree.root));
+        System.out.println("binaryTree.getKLevelNodeCount(binaryTree.root, 2) = " + binaryTree.getKLevelNodeCount(binaryTree.root, 2));
+        System.out.println("binaryTree.getHeight(binaryTree.root) = " + binaryTree.getHeight(binaryTree.root));
+        System.out.println("binaryTree.find(binaryTree.root, 'G') = " + binaryTree.find(binaryTree.root, 'G').val);
+
     }
 
     public void createTree() {
@@ -145,9 +150,25 @@ public class MyBinaryTree {
         int rightHeight = getHeight(root.right);
         return leftHeight > rightHeight ? leftHeight + 1 : rightHeight + 1;
     }
-//
-//    // 检测值为value的元素是否存在
-//    TreeNode find(TreeNode root, int val);
+
+    // 检测值为value的元素是否存在
+    TreeNode find(TreeNode root, int val) {
+        if (root == null) {
+            return null;
+        }
+        if (root.val == val) {
+            return root;
+        }
+        TreeNode leftNode = find(root.left, val);
+        if (leftNode != null) {
+            return leftNode;
+        }
+        TreeNode rightNode = find(root.right, val);
+        if (rightNode != null) {
+            return rightNode;
+        }
+        return null;
+    }
 //
 //    //层序遍历
 //    void levelOrder(TreeNode root);
