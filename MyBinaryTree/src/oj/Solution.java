@@ -33,7 +33,49 @@ public class Solution {
 
     }
 
-    //    另一棵树的子树
+    // 平衡二叉树 时间复杂度：O(n^2)
+    // 一个二叉树每个节点的左右两个子树的高度差的绝对值不超过 1
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        int leftHeight = maxDepth(root.left);
+        int rightHeight = maxDepth(root.right);
+        return Math.abs(leftHeight - rightHeight) <= 1 && isBalanced(root.left) && isBalanced(root.right);
+    }
+
+    // 二叉树的最大深度
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftTree = maxDepth(root.left);
+        int rightTree = maxDepth(root.right);
+        return leftTree > rightTree ? leftTree + 1 : rightTree + 1;
+    }
+
+    // 平衡二叉树 时间复杂度：O(n)
+    public boolean isBalanced2(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return maxDepth2(root) >= 0;
+    }
+
+    public int maxDepth2(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int leftTree = maxDepth(root.left);
+        int rightTree = maxDepth(root.right);
+        if (leftTree >= 0 && rightTree >= 0 && Math.abs(leftTree - rightTree) <= 1) {
+            return Math.max(leftTree, rightTree) + 1;
+        } else {
+            return -1;
+        }
+    }
+
+    // 另一棵树的子树
 /*
     给你两棵二叉树 root 和 subRoot 。检验 root 中是否包含和 subRoot 具有相同结构和节点值的子树。如果存在，返回 true ；否则，返回 false 。
     二叉树 tree 的一棵子树包括 tree 的某个节点和这个节点的所有后代节点。tree 也可以看做它自身的一棵子树。
