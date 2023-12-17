@@ -33,6 +33,34 @@ public class Solution {
 
     }
 
+    // 二叉树遍历
+
+
+    // 对称二叉树 | symmetric 对称的
+    // 给你一个二叉树的根节点 root ， 检查它是否轴对称。
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return isSymmetricChild(root.left, root.right);
+    }
+
+    private boolean isSymmetricChild(TreeNode leftTree, TreeNode rightTree) {
+        // 一个为空，一个不为空
+        if (leftTree == null && rightTree != null || leftTree != null && rightTree == null) {
+            return false;
+        }
+        // 两个都为空
+        if (leftTree == null && rightTree == null) {
+            return true;
+        }
+        // 判断值
+        if (leftTree.val != rightTree.val) {
+            return false;
+        }
+        return isSymmetricChild(leftTree.left, rightTree.right) && isSymmetricChild(leftTree.right, rightTree.left);
+    }
+
     // 平衡二叉树 时间复杂度：O(n^2)
     // 一个二叉树每个节点的左右两个子树的高度差的绝对值不超过 1
     public boolean isBalanced(TreeNode root) {

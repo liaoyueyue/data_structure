@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 /**
  * Created with IntelliJ IDEA.
  * Description:
@@ -35,7 +40,9 @@ public class MyBinaryTree {
         System.out.println("binaryTree.getKLevelNodeCount(binaryTree.root, 2) = " + binaryTree.getKLevelNodeCount(binaryTree.root, 2));
         System.out.println("binaryTree.getHeight(binaryTree.root) = " + binaryTree.getHeight(binaryTree.root));
         System.out.println("binaryTree.find(binaryTree.root, 'G') = " + binaryTree.find(binaryTree.root, 'G').val);
-
+        binaryTree.levelOrder(binaryTree.root);
+        System.out.println("是不是完全二叉树： ");
+        System.out.println(binaryTree.isCompleteTree(binaryTree.root));
     }
 
     public void createTree() {
@@ -169,10 +176,76 @@ public class MyBinaryTree {
         }
         return null;
     }
-//
-//    //层序遍历
-//    void levelOrder(TreeNode root);
-//
-//    // 判断一棵树是不是完全二叉树
-//    boolean isCompleteTree(TreeNode root);
+
+    //层序遍历
+    void levelOrder(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode cur = queue.poll();
+            System.out.print(cur.val + " ");
+            if (cur.left != null) {
+                queue.offer(cur.left);
+            }
+            if (cur.right != null) {
+                queue.offer(cur.right);
+            }
+        }
+        System.out.println();
+    }
+
+    // 层序遍历
+    public List<List<Integer>> levelOrder2(TreeNode root) {
+        List<List<Integer>> ret = new ArrayList<>();
+        if (root == null) return ret;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            List<Integer> row = new ArrayList<>();
+            while (size > 0) {
+                TreeNode cur = queue.poll();
+                size--;
+                row.add((int) cur.val);
+                if (cur.left != null) {
+                    queue.offer(cur.left);
+                }
+                if (cur.right != null) {
+                    queue.offer(cur.right);
+                }
+            }
+            ret.add(row);
+        }
+        return ret;
+    }
+
+    // 判断一棵树是不是完全二叉树
+    boolean isCompleteTree(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode cur = queue.poll();
+            if (cur != null) {
+                queue.offer(cur.left);
+                queue.offer(cur.right);
+            } else {
+                break;
+            }
+        }
+        while (!queue.isEmpty()) {
+            TreeNode cur = queue.peek();
+            if (cur != null) {
+                return false;// 不是完全二叉树
+            } else {
+                queue.poll();
+            }
+        }
+        return true;
+    }
 }
