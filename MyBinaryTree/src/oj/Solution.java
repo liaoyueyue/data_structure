@@ -2,6 +2,7 @@ package oj;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,8 +34,110 @@ public class Solution {
 
     }
 
-    // 二叉树遍历
+    // 二叉搜索树与双向链表-https://www.nowcoder.com/share/jump/3054743731702912925445
+    // 输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。
+    // 数据范围:输入二叉树的节点数0≤n≤1000，二树中每个节点的值0≤val≤1000
+    // 要求:空间复杂度 O(1)(即在原树上操作)，时间复杂度 O(n)
+    // 注意:
+    // 1.要求不能创建任何新的结点，只能调整树中结点指针的指向。当转化完成以后，树中节点的左指针需要指向前驱，树中节点的右指针需要指向后继
+    // 2.返回链表中的第一个节点的指针
+    // 3.函数返回的TreeNode，有左右指针，其实可以看成一个双向链表的数据结构
+    private TreeNode prev = null;
+    private void convertChild(TreeNode root) {
+        if (root == null) return;
+        convertChild(root.left);
+        root.left = prev;
+        if (prev != null) {
+            prev.right = root;
+        }
+        prev = root;
+        convertChild(root.right);
+    }
+    public TreeNode Convert(TreeNode pRootOfTree) {
+        if (pRootOfTree == null) return null;
+        convertChild(pRootOfTree);
+        TreeNode head = pRootOfTree;
+        while (head.left != null) {
+            head = head.left;
+        }
+        return head;
+    }
 
+
+    // 二叉树的最近公共祖先
+    // 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个节点 p、q，最近公共祖先表示为一个节点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null){
+            return null;
+        }
+        if(root == p || root == q) {
+            return root;
+        }
+        TreeNode retLeft = lowestCommonAncestor(root.left, p, q);
+        TreeNode retRight = lowestCommonAncestor(root.right, p, q);
+        if(retLeft != null && retRight != null) {
+            return root;
+        }else if(retLeft != null) {
+            return retLeft;
+        }else {
+            return retRight;
+        }
+    }
+
+    public TreeNode lowestCommonAncestor2(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || p == null || q == null) {
+            return null;
+        }
+        Stack<TreeNode> stack1 = new Stack<>();
+        getPath(root, p, stack1);
+        Stack<TreeNode> stack2 = new Stack<>();
+        getPath(root, q, stack2);
+        int size1 = stack1.size();
+        int size2 = stack2.size();
+        if (size1 > size2) {
+            int temp = size1 - size2;
+            while (temp != 0) {
+                stack1.pop();
+                temp--;
+            }
+        } else {
+            int temp = size2 - size1;
+            while (temp != 0) {
+                stack2.pop();
+                temp--;
+            }
+        }
+        // 两个栈， 元素个数一样
+        while (!stack1.empty() && !stack2.empty()) {
+            if (stack1.peek() == stack2.peek()) {
+                return stack1.peek();
+            } else {
+                stack1.pop();
+                stack2.pop();
+            }
+        }
+        return null; // 没有公共祖先
+    }
+
+    // 找到根节点到指定节点node之间路径上的所有节点，存储到stack当中
+    private boolean getPath(TreeNode root, TreeNode node, Stack<TreeNode> stack) {
+        if (root == null || node == null) {
+            return false;
+        }
+        stack.push(root);
+        if (root == node) {
+            return true;
+        }
+        if (getPath(root.left, node, stack)) {
+            return true;
+        }
+        if (getPath(root.right, node, stack)) {
+            return true;
+        }
+        // 根节点不是， 根的左边和右边没有找到
+        stack.pop();
+        return false;
+    }
 
     // 对称二叉树 | symmetric 对称的
     // 给你一个二叉树的根节点 root ， 检查它是否轴对称。
