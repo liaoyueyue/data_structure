@@ -34,6 +34,101 @@ public class Solution {
 
     }
 
+    // 非递归后续遍历
+    public List<Integer> postorderTraversalNoR(TreeNode root) {
+        List<Integer> ret = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode prev = null;
+        TreeNode cur = root;
+        while(cur != null || !stack.empty()) {
+            while(cur != null) {
+                stack.push(cur);
+                cur = cur.left;
+            }
+            TreeNode top = stack.peek();
+            // top.right 如果以及被访问了， 也要弹出top所指向的节点
+            if(top.right == null || top.right == prev) {
+                stack.pop();
+                ret.add(top.val);
+                prev = top;
+            }else {
+                cur = top.right;
+            }
+        }
+        return ret;
+    }
+
+    // 非递归中序遍历
+    public List<Integer> inorderTraversalNoR(TreeNode root) {
+        List<Integer> ret = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = root;
+        while(cur != null || !stack.empty()) {
+            while(cur != null) {
+                stack.push(cur);
+                cur = cur.left;
+            }
+            TreeNode top = stack.pop();
+            ret.add(top.val);
+            cur = top.right;
+        }
+        return ret;
+    }
+
+    // 非递归前序遍历
+    public List<Integer> preorderTraversalNoR(TreeNode root) {
+        List<Integer> ret = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = root;
+        while(cur != null || !stack.empty()) {
+            while(cur != null) {
+                stack.push(cur);
+                ret.add(cur.val);
+                cur = cur.left;
+            }
+            TreeNode top = stack.pop();
+            cur = top.right;
+        }
+        return ret;
+    }
+
+    // 根据二叉树创建字符串-https://leetcode.cn/problems/construct-string-from-binary-tree/description/
+    // 给你二叉树的根节点 root ，请你采用前序遍历的方式，将二叉树转化为一个由括号和整数组成的字符串，返回构造出的字符串。
+    // 空节点使用一对空括号对 "()" 表示，转化后需要省略所有不影响字符串与原始二叉树之间的一对一映射关系的空括号对。
+    // 输入：root = [1,2,3,4]
+    // 输出："1(2(4))(3)"
+    // 解释：初步转化后得到 "1(2(4)())(3()())" ，但省略所有不必要的空括号对后，字符串应该是"1(2(4))(3)" 。
+    public String tree2str(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        tree2strChild(root, sb);
+        return sb.toString();
+    }
+    private void tree2strChild(TreeNode t, StringBuilder sb) {
+        if(t == null) return;
+        sb.append(t.val);
+        if(t.left != null) {
+            sb.append("(");
+            tree2strChild(t.left, sb);
+            sb.append(")");
+        }else {
+            if(t.right == null) {
+                return;
+            }else {
+                sb.append("()");
+            }
+        }
+        if(t.right == null){
+            return;
+        }else {
+            sb.append("(");
+            tree2strChild(t.right, sb);
+            sb.append(")");
+        }
+
+    }
+
+
+
     // 二叉搜索树与双向链表-https://www.nowcoder.com/share/jump/3054743731702912925445
     // 输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。
     // 数据范围:输入二叉树的节点数0≤n≤1000，二树中每个节点的值0≤val≤1000
