@@ -45,7 +45,7 @@ public class TestHeap {
         // 保证有左孩子
         while (child < len) {
             // 判断左孩子和右孩子谁最打， 前提是有右孩子
-            if (child + 1 < usedSize && elem[child] < elem[child + 1]) {
+            if (child + 1 < len  && elem[child] < elem[child + 1]) {
                 child++;// 保存了最大值的下标
             }
             if (elem[child] > elem[parent]) {
@@ -106,5 +106,14 @@ public class TestHeap {
 
     public boolean isEmpty() {
         return usedSize == 0;
+    }
+
+    public void heapSort() {
+        int end = usedSize - 1;
+        while (end > 0) {
+            swap(elem, 0, end);
+            shiftDown(0, end);
+            end--;
+        }
     }
 }
